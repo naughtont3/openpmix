@@ -17,7 +17,7 @@ dnl Copyright (c) 2009      Los Alamos National Security, LLC.  All rights
 dnl                         reserved.
 dnl Copyright (c) 2009-2011 Oak Ridge National Labs.  All rights reserved.
 dnl Copyright (c) 2011-2013 NVIDIA Corporation.  All rights reserved.
-dnl Copyright (c) 2013-2020 Intel, Inc.  All rights reserved.
+dnl Copyright (c) 2013-2022 Intel, Inc.  All rights reserved.
 dnl Copyright (c) 2015-2019 Research Organization for Information Science
 dnl                         and Technology (RIST).  All rights reserved.
 dnl Copyright (c) 2016      Mellanox Technologies, Inc.
@@ -725,6 +725,17 @@ AC_DEFUN([PMIX_SETUP_CORE],[
 
     # This check must come after PMIX_CONFIG_THREADS
     AC_CHECK_FUNCS([pthread_setaffinity_np])
+
+    # Setup HTML and man page processing
+    OAC_SETUP_SPHINX([$srcdir/docs/_build/html/index.html], [])
+
+    AS_IF([test -n "$OAC_MAKEDIST_DISABLE"],
+          [AS_IF([test -n "$PMIX_MAKEDIST_DISABLE"],
+                 [PMIX_MAKEDIST_DISABLE="$PMIX_MAKEDIST_DISABLE $OAC_MAKEDIST_DISABLE"],
+                 [PMIX_MAKEDIST_DISABLE=$OAC_MAKEDIST_DISABLE])])
+    AS_IF([test -n "$PMIX_MAKEDIST_DISABLE"],
+          [AC_MSG_WARN(["make dist" will be disabled due to: $PMIX_MAKEDIST_DISABLE])])
+    AC_SUBST([PMIX_MAKEDIST_DISABLE])
 
     ##################################
     # Visibility
