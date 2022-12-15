@@ -16,3 +16,4 @@ section.
    gnu-autotools
    sphinx
    rst-for-markdown-expats.rst
+   code-events
