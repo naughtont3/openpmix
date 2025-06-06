@@ -1,4 +1,4 @@
-name: pmix-python-versions
+name: PMIx-bindings Python Versions
 
 on: [pull_request]
 
