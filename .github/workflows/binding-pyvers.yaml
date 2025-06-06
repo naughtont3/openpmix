@@ -1,0 +1,48 @@
+name: PMIx-bindings Python Versions
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends software-properties-common libhwloc-dev libevent-dev
+
+      - name: Git clone OpenPMIx
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          clean: false
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Install python dependencies
+        run: |
+           python -m pip install --upgrade pip setuptools wheel
+           pip install -r bindings/python/requirements.txt
+
+      - name: Build OpenPMIx
+        run: |
+          ./autogen.pl
+          ./configure --enable-python-bindings --prefix=$RUNNER_TEMP/pmixinstall
+          make -j $(nproc)
+          make install
+
+# TODO: Publishing to PyPI
+#       https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python#publishing-to-pypi
+
