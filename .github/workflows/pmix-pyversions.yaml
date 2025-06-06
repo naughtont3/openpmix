@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
-		exclude:
-		  - os: ubuntu-latest
-		    python-version: "pypy3.10"
+	exclude:
+	  - os: ubuntu-latest
+   	    python-version: "pypy3.10"
 
     steps:
       - name: Install dependencies
@@ -25,7 +25,6 @@ jobs:
           submodules: recursive
           clean: false
 
-      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
@@ -33,11 +32,11 @@ jobs:
       # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-
-	  - name: Install python dependencies
+	
+      - name: Install python dependencies
         run: |
-		  python -m pip install --upgrade pip setuptools wheel
-		  pip install -r bindings/python/requirements.txt
+	   python -m pip install --upgrade pip setuptools wheel
+	   pip install -r bindings/python/requirements.txt
 
       - name: Build OpenPMIx
         run: |
