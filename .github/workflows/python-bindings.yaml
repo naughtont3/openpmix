@@ -8,10 +8,9 @@
 #-----------------------------------------------------------------
 name: OpenPMIx-bindings Python Versions
 
+# Run only on pull-requests -or- via manual 'Run workflow' option.
 on:
   pull_request:
-    paths:
-      - 'bindings/python/**'
   workflow_dispatch:
 
 jobs:
